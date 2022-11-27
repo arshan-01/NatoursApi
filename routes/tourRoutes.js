@@ -1,4 +1,5 @@
 const express = require('express');
+const { router } = require('../app');
 const tourController = require('../controllers/tourController');
 
 const tourRouter = express.Router();
@@ -8,6 +9,9 @@ const tourRouter = express.Router();
 // app.post('/api/v1/tours',createNewTour)
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.delete('/api/v1/tours/:id', deleteTour);
+
+
+tourRouter.param('id', tourController.checkID)
 
 //Tour Router
 tourRouter

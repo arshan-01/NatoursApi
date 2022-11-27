@@ -4,6 +4,18 @@ const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
   );
   
+
+    exports.checkID = ((req,res,next,val)=>{
+        const id = val * 1; //convert string to number
+        const tour = tours.find((el) => el.id === id);
+        if (!tour) {
+            return res.status(404).json({
+              status: 'page not found',
+            });
+          }
+          next();
+    });
+
   exports.getAllTours = (req, res) => {
     res.status(200).json({
       status: 'success',
@@ -18,12 +30,6 @@ const tours = JSON.parse(
     const id = req.params.id * 1; //convert string to number
     const tour = tours.find((el) => el.id === id);
     console.log(tour);
-    if (!tour) {
-      res.status(404).json({
-        status: 'page not found',
-      });
-      return;
-    }
     res.status(200).json({
       status: 'success',
       data: {
@@ -53,15 +59,6 @@ const tours = JSON.parse(
   };
   
   exports.updateTour = (req, res) => {
-    const id = req.params.id * 1; //convert string to number
-    const tour = tours.find((el) => el.id === id);
-  
-    if (!tour) {
-      res.status(404).json({
-        status: 'page not found',
-      });
-      return;
-    }
     res.status(200).json({
       status: 'success',
       results: tours.length,
@@ -72,17 +69,10 @@ const tours = JSON.parse(
   };
   exports.deleteTour = (req, res) => {
     const id = req.params.id * 1; //convert string to number
-  
     const tour = tours.find((el) => el.id === id);
     const index = tours.indexOf(tour);
     tours.splice(index, 1);
   
-    if (!tour) {
-      res.status(404).json({
-        status: 'page not found',
-      });
-      return;
-    }
     res.status(204).json({
       status: 'success',
       data: {
